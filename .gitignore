@@ -1,0 +1,17 @@
+# secrets — never commit
+.env
+.env.*
+!.env.example
+
+# local environments and builds
+.venv/
+node_modules/
+frontend/dist/
+__pycache__/
+*.pyc
+.DS_Store
+*.log
+
+# runtime data: SQLite database and test reports (contain donor records)
+backend/data/*
+!backend/data/.gitkeep

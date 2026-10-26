@@ -1,0 +1,7 @@
+# Backend (Python 3.12+). Install:  python3 -m venv .venv && .venv/bin/pip install -r backend/requirements.txt
+pydantic-ai-slim[openai]>=2.56   # the four agents (gpt-6-luna via Portkey)
+fastapi>=0.143                   # API
+uvicorn>=0.54                    # ASGI server
+python-dotenv>=1.0               # reads secrets from .env
+email-validator>=2.0             # email fields
+pillow>=10.0                     # only for scripts/simulate_50.py (test company logos)
