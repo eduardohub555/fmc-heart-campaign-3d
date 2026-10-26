@@ -689,3 +689,13 @@ def staff_audit(limit: int = 100):
 @app.get("/api/topics")
 def topics():
     return TOPICS
+
+
+# ------------------------------------------------- production: serve the built 3D frontend
+# In production (Render) one service serves both the API and the React app, so the browser
+# talks to a single origin. Locally, `npm run dev` serves the frontend instead.
+from fastapi.staticfiles import StaticFiles  # noqa: E402
+
+FRONTEND_DIST = config.PROJECT_DIR / "frontend" / "dist"
+if FRONTEND_DIST.is_dir():
+    app.mount("/", StaticFiles(directory=FRONTEND_DIST, html=True), name="frontend")

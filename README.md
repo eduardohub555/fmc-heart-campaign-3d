@@ -9,6 +9,21 @@ hospital to donate toward surgeries (≈ 200,000 MXN each) for people who can't 
 - **Model:** `gpt-6-luna` through Portkey, and nothing else. The name is set in one place:
   `backend/app/config.py`.
 
+## Deploy on Render
+
+The repository includes a Render Blueprint (`render.yaml`) and a `Dockerfile`. They define a
+single free web service: the container builds the 3D frontend and runs FastAPI, which serves
+both the app and `/api`.
+
+1. In Render, go to **New → Blueprint** and pick this repository (branch `main`).
+2. When asked, paste your `PORTKEY_API_KEY`. Render generates `ADMIN_PASSWORD` itself; you can
+   see it under the service's **Environment** tab (the username is `staff`).
+3. Open the service URL. The management dashboard is at `/#/staff`.
+
+Note: on Render's free plan, the disk is temporary. The SQLite database (donations, accounts,
+letters) resets when the service restarts or redeploys. For lasting data, add a Render
+persistent disk mounted at `/app/backend/data` (paid plans) or move to a hosted database.
+
 ## Setup (first time)
 
 You need Python 3.12+ and Node 20+. From the repository root:

@@ -1,0 +1,21 @@
+# Render Blueprint: one free web service (Docker) for the API + 3D frontend.
+services:
+  - type: web
+    name: fmc-heart-campaign-3d
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      # Secrets are entered in the Render dashboard, never committed.
+      - key: PORTKEY_API_KEY
+        sync: false            # Render asks you for it when you apply the Blueprint
+      - key: ADMIN_USERNAME
+        value: staff
+      - key: ADMIN_PASSWORD
+        generateValue: true    # Render creates a random password; see it under Environment
+      - key: PRICE_INPUT_PER_1M
+        value: "0.10"
+      - key: PRICE_OUTPUT_PER_1M
+        value: "0.50"
