@@ -6,7 +6,6 @@
 # local environments and builds
 .venv/
 node_modules/
-frontend/dist/
 __pycache__/
 *.pyc
 .DS_Store
@@ -16,3 +15,6 @@ __pycache__/
 backend/data/*
 !backend/data/.gitkeep
 *.tsbuildinfo
+
+# personal local database backups
+local_backups/

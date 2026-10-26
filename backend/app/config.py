@@ -20,8 +20,10 @@ BACKEND_DIR = Path(__file__).resolve().parent.parent
 PROJECT_DIR = BACKEND_DIR.parent  # Final Project/
 COURSE_ROOT = PROJECT_DIR.parent
 
-load_dotenv(COURSE_ROOT / ".env")
+# Look for .env in two places: first the repo's own folder, then the folder above it
+# (where the teaching staff keep their keys). The first value found wins.
 load_dotenv(PROJECT_DIR / ".env")
+load_dotenv(COURSE_ROOT / ".env")
 
 #: The only model this app may call. It appears once, here.
 MODEL_NAME = "gpt-6-luna"
@@ -51,9 +53,10 @@ MAX_MESSAGES_PER_VISIT = 40
 HISTORY_TURNS = 3  # only the last 3 exchanges are resent to the model
 
 #: Tokenomics: USD per 1M tokens for gpt-6-luna (course price sheet, Oct 2026).
-#: Cached-input discounts aren't applied, so costs shown are the pessimistic price.
+#: Cached input (prompt prefix reused by the provider) is billed at the cached price.
 PRICE_INPUT_PER_1M = float(os.getenv("PRICE_INPUT_PER_1M", "0.10"))
 PRICE_OUTPUT_PER_1M = float(os.getenv("PRICE_OUTPUT_PER_1M", "0.50"))
+PRICE_CACHED_INPUT_PER_1M = float(os.getenv("PRICE_CACHED_INPUT_PER_1M", "0.01"))
 
 #: Campaign constant: estimated cost of one heart surgery (MXN).
 SURGERY_COST_MXN = 200_000

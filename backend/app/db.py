@@ -163,6 +163,7 @@ def init() -> None:
             ("users", "tax_id", "TEXT"),
             ("patients", "status", "TEXT NOT NULL DEFAULT 'active'"),
             ("letters", "body_es", "TEXT"),
+            ("audit_log", "cached_input_tokens", "INTEGER"),
             ("letters", "body_en", "TEXT"),
             ("patients", "closed_at", "TEXT"),
             ("donations", "tax_id", "TEXT"),
@@ -175,7 +176,8 @@ def init() -> None:
                 "INSERT INTO patients (alias, age, city, condition, procedure) VALUES (?,?,?,?,?)",
                 SEED_PATIENTS,
             )
-        if os.getenv("SEED_DEMO_DATA") == "1" and c.execute("SELECT COUNT(*) FROM donations").fetchone()[0] == 0:
+        # A fresh database (new clone, or Render's temporary disk) starts with the 50 demo donors.
+        if os.getenv("SEED_DEMO_DATA", "1") == "1" and c.execute("SELECT COUNT(*) FROM donations").fetchone()[0] == 0:
             load_demo_seed(c)
 
 

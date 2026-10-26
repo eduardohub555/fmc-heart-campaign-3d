@@ -619,7 +619,7 @@ function Audit({ token, onAuthError }: { token: string; onAuthError: () => void 
   const [dep, setDep] = useState(0);
   const { data } = useLoad<{
     log: Row[]; handoffs: Row[]; totals: Row; per_day: Row[]; per_month: Row[]; by_agent: Row[];
-    prices: { model: string; input_per_1m_usd: number; output_per_1m_usd: number };
+    prices: { model: string; input_per_1m_usd: number; cached_input_per_1m_usd: number; output_per_1m_usd: number };
   }>("/staff/audit", token, onAuthError, dep);
   const usd = (v: unknown) => `$${Number(v ?? 0).toFixed(4)}`;
   return (
@@ -632,7 +632,9 @@ function Audit({ token, onAuthError }: { token: string; onAuthError: () => void 
             <div><small>Input tokens</small><b>{Number(data.totals.input_tokens).toLocaleString()}</b></div>
             <div><small>Output tokens</small><b>{Number(data.totals.output_tokens).toLocaleString()}</b></div>
             <div><small>Total cost (USD)</small><b>{usd(data.totals.cost_usd)}</b>
-              <em>{data.prices.model}: ${data.prices.input_per_1m_usd}/1M in · ${data.prices.output_per_1m_usd}/1M out</em></div>
+              <em>{data.prices.model}: ${data.prices.input_per_1m_usd}/1M in · ${data.prices.cached_input_per_1m_usd}/1M cached · ${data.prices.output_per_1m_usd}/1M out</em></div>
+            <div><small>Cached input tokens</small><b>{Number(data.totals.cached_input_tokens ?? 0).toLocaleString()}</b>
+              <em>reused prompt prefix, billed at the cached price</em></div>
           </div>
           <h3>Tokens and cost per month</h3>
           <Table rows={data.per_month} />

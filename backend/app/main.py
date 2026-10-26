@@ -667,23 +667,28 @@ def staff_letters():
 
 @app.get("/api/staff/audit", dependencies=[Depends(security.current_staff)])
 def staff_audit(limit: int = 100):
-    pin, pout = config.PRICE_INPUT_PER_1M, config.PRICE_OUTPUT_PER_1M
-    cost = f"ROUND((COALESCE(input_tokens,0) * {pin} + COALESCE(output_tokens,0) * {pout}) / 1000000.0, 6)"
-    log = db.rows(f"SELECT id, ts, agent, action, status, input_tokens, output_tokens, {cost} AS cost_usd, latency_ms, "
+    pin, pout, pc = config.PRICE_INPUT_PER_1M, config.PRICE_OUTPUT_PER_1M, config.PRICE_CACHED_INPUT_PER_1M
+    # input_tokens includes the cached part; cached tokens are billed at the cached price
+    cost = (f"ROUND(((COALESCE(input_tokens,0) - COALESCE(cached_input_tokens,0)) * {pin} + COALESCE(cached_input_tokens,0) * {pc} "
+            f"+ COALESCE(output_tokens,0) * {pout}) / 1000000.0, 6)")
+    log = db.rows(f"SELECT id, ts, agent, action, status, input_tokens, cached_input_tokens, output_tokens, {cost} AS cost_usd, latency_ms, "
                   f"visit_id, substr(detail, 1, 300) AS detail FROM audit_log ORDER BY id DESC LIMIT ?", (min(limit, 500),))
     handoffs = db.rows("SELECT id, from_agent, to_agent, visit_id, substr(payload,1,300) AS payload, created_at FROM handoffs ORDER BY id DESC LIMIT 50")
     summary = lambda n: db.rows(  # noqa: E731
         f"SELECT substr(ts, 1, {n}) AS period, COUNT(*) AS model_calls, SUM(input_tokens) AS input_tokens, "
+        f"SUM(COALESCE(cached_input_tokens,0)) AS cached_input_tokens, "
         f"SUM(output_tokens) AS output_tokens, ROUND(SUM({cost}), 4) AS cost_usd "
         f"FROM audit_log WHERE input_tokens IS NOT NULL GROUP BY period ORDER BY period DESC")
     totals = db.one(f"SELECT COUNT(*) AS calls, COALESCE(SUM(input_tokens),0) AS input_tokens, "
+                    f"COALESCE(SUM(cached_input_tokens),0) AS cached_input_tokens, "
                     f"COALESCE(SUM(output_tokens),0) AS output_tokens, ROUND(COALESCE(SUM({cost}),0), 4) AS cost_usd "
                     f"FROM audit_log WHERE input_tokens IS NOT NULL")
     by_agent = db.rows(f"SELECT agent, COUNT(*) AS model_calls, SUM(input_tokens) AS input_tokens, SUM(output_tokens) AS output_tokens, "
                        f"ROUND(SUM({cost}), 4) AS cost_usd, ROUND(AVG({cost}), 6) AS avg_cost_per_call FROM audit_log "
                        f"WHERE input_tokens IS NOT NULL GROUP BY agent ORDER BY cost_usd DESC")
     return {"log": log, "handoffs": handoffs, "totals": totals, "per_day": summary(10), "per_month": summary(7),
-            "by_agent": by_agent, "prices": {"model": config.MODEL_NAME, "input_per_1m_usd": pin, "output_per_1m_usd": pout}}
+            "by_agent": by_agent, "prices": {"model": config.MODEL_NAME, "input_per_1m_usd": pin, "cached_input_per_1m_usd": pc,
+                       "output_per_1m_usd": pout}}
 
 
 @app.get("/api/topics")

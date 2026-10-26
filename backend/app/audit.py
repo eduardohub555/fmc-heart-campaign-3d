@@ -20,8 +20,8 @@ def log(
 ) -> None:
     db.execute(
         """INSERT INTO audit_log
-           (ts, agent, action, visit_id, status, detail, input_tokens, output_tokens, latency_ms)
-           VALUES (?,?,?,?,?,?,?,?,?)""",
+           (ts, agent, action, visit_id, status, detail, input_tokens, cached_input_tokens, output_tokens, latency_ms)
+           VALUES (?,?,?,?,?,?,?,?,?,?)""",
         (
             db.now(),
             agent,
@@ -30,6 +30,7 @@ def log(
             status,
             json.dumps(detail, ensure_ascii=False)[:4000],
             getattr(usage, "input_tokens", None),
+            getattr(usage, "cache_read_tokens", None) if usage is not None else None,
             getattr(usage, "output_tokens", None),
             latency_ms,
         ),
