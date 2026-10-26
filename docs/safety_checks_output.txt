@@ -1,0 +1,18 @@
+PASS  passwords are salted scrypt hashes
+      stored value: scrypt$iZGvgmxGRluAcOfS02lRqQ==$6EDX1h…  (plain password not stored; wrong password rejected)
+PASS  over-long message rejected before any model call
+      HTTP 422
+PASS  question cap per visit (40) stops bots
+      HTTP 429: You've reached the question limit for this visit. Thank you for learning with us!
+PASS  token ceiling stops an expensive run
+      UsageLimitExceeded: Exceeded the total_tokens_limit of 300 (total_tokens=2905). Consider raising the limit, or see the docs on usage limits for budget-aware patterns: https://pydantic.dev/docs/ai/core-concepts/agent/#usage-limits
+PASS  invented source ids are dropped
+      kept ['who-cvd', 'aha-cpr']
+PASS  donor data is for managers only
+      no session → HTTP 401; donor session → HTTP 403
+PASS  cannot spend more than is available
+      HTTP 400: Only 1,942,000 MXN is available.
+PASS  a sent email can't be edited
+      HTTP 409: This email was already sent and can't be changed.
+
+8 safety checks passed (test data removed)

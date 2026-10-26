@@ -7,6 +7,10 @@ Management dashboard: https://fmc-heart-campaign-3d.onrender.com/#/staff
 
 *Eduardo Casarrubias Solano · MGT 409 AI Foundations for Managers · Yale SOM*
 
+**Report and slides:** `docs/Final_Report_Eduardo_Casarrubias.html` and
+`docs/Final_Slides_Eduardo_Casarrubias.html`. Each is a single file with every screenshot embedded,
+so double-clicking opens it. They are rebuilt with `python3 docs/build_docs.py`.
+
 This app lets potential donors learn about heart disease and create an account to make one-time
 or recurring donations. It also helps the management team of Fundación Mexicana del Corazón track
 donations and pay for surgeries for patients in need.

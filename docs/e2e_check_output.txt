@@ -1,0 +1,59 @@
+PASS manager can sign up (name, email, password)
+PASS manager session works
+PASS manager sign out ends the session
+PASS manager can sign in
+PASS wrong manager password is rejected
+PASS [before] total raised = one-time + monthly payments so far
+PASS [before] spent on surgeries = sum of payments
+PASS [before] available = raised − spent
+PASS [before] number of donations
+PASS [before] number of donors
+PASS [before] monthly chart ends at the same totals
+PASS [before] year-to-date charts add up to total raised (all gifts are from this year)
+PASS [before] surgery payments table = spent
+PASS donor can sign up (with tax ID and wall name)
+PASS signed-in donor sees their own account
+PASS donor sign out ends the session
+PASS wrong donor password is rejected
+PASS donor can sign in
+PASS signed-in donor can make a one-time donation
+PASS signed-in donor can make a monthly donation (as a company)
+PASS signed-out visitor cannot donate
+PASS [after donations] total raised = one-time + monthly payments so far
+PASS [after donations] spent on surgeries = sum of payments
+PASS [after donations] available = raised − spent
+PASS [after donations] number of donations
+PASS [after donations] number of donors
+PASS [after donations] monthly chart ends at the same totals
+PASS [after donations] year-to-date charts add up to total raised (all gifts are from this year)
+PASS [after donations] surgery payments table = spent
+PASS raised went up by exactly 1,234.56 + 700 (first monthly payment)
+PASS donations +2 and donors +1
+PASS manager sees exactly what the donor entered (one-time)
+PASS manager sees exactly what the donor entered (monthly company)
+PASS paying without a patient is refused
+PASS manager can pay any amount toward a surgery (1,000.75)
+PASS [after partial payment] total raised = one-time + monthly payments so far
+PASS [after partial payment] spent on surgeries = sum of payments
+PASS [after partial payment] available = raised − spent
+PASS [after partial payment] number of donations
+PASS [after partial payment] number of donors
+PASS [after partial payment] monthly chart ends at the same totals
+PASS [after partial payment] year-to-date charts add up to total raised (all gifts are from this year)
+PASS [after partial payment] surgery payments table = spent
+PASS partial payment reduced available by exactly 1,000.75
+PASS patient stays in the campaign when the box is not ticked
+PASS [after closing a surgery] total raised = one-time + monthly payments so far
+PASS [after closing a surgery] spent on surgeries = sum of payments
+PASS [after closing a surgery] available = raised − spent
+PASS [after closing a surgery] number of donations
+PASS [after closing a surgery] number of donors
+PASS [after closing a surgery] monthly chart ends at the same totals
+PASS [after closing a surgery] year-to-date charts add up to total raised (all gifts are from this year)
+PASS [after closing a surgery] surgery payments table = spent
+PASS ticking 'covers the whole surgery' removes the patient
+PASS a closed patient can't receive more payments
+PASS can't spend more than is available
+cleanup: test donors, donations, payments and manager removed
+
+56/56 checks passed

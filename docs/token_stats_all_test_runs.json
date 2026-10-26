@@ -1,0 +1,117 @@
+{
+ "totals": {
+  "calls": 295,
+  "inp": 416617,
+  "outp": 66190
+ },
+ "by_action": [
+  {
+   "agent": "writer",
+   "action": "draft_letter",
+   "n": 165,
+   "avg_in": 750.0,
+   "avg_out": 270.0,
+   "avg_ms": 2273.0,
+   "min_in": 666,
+   "max_in": 792
+  },
+  {
+   "agent": "teacher",
+   "action": "answer_question",
+   "n": 102,
+   "avg_in": 2564.0,
+   "avg_out": 139.0,
+   "avg_ms": 2640.0,
+   "min_in": 1868,
+   "max_in": 3117
+  },
+  {
+   "agent": "coordinator",
+   "action": "synthesize_guidance",
+   "n": 8,
+   "avg_in": 2394.0,
+   "avg_out": 478.0,
+   "avg_ms": 5750.0,
+   "min_in": 1557,
+   "max_in": 2519
+  },
+  {
+   "agent": "teacher",
+   "action": "reply_to_coordinator",
+   "n": 4,
+   "avg_in": 517.0,
+   "avg_out": 111.0,
+   "avg_ms": 1094.0,
+   "min_in": 512,
+   "max_in": 531
+  },
+  {
+   "agent": "writer",
+   "action": "reply_to_coordinator",
+   "n": 4,
+   "avg_in": 291.0,
+   "avg_out": 69.0,
+   "avg_ms": 927.0,
+   "min_in": 290,
+   "max_in": 294
+  },
+  {
+   "agent": "writer",
+   "action": "draft_letter_retry",
+   "n": 3,
+   "avg_in": 816.0,
+   "avg_out": 308.0,
+   "avg_ms": 3571.0,
+   "min_in": 814,
+   "max_in": 820
+  },
+  {
+   "agent": "writer",
+   "action": "translate_edit_to_en",
+   "n": 3,
+   "avg_in": 351.0,
+   "avg_out": 179.0,
+   "avg_ms": 2456.0,
+   "min_in": 334,
+   "max_in": 363
+  },
+  {
+   "agent": "accountant",
+   "action": "budget_narrative",
+   "n": 2,
+   "avg_in": 1133.0,
+   "avg_out": 364.0,
+   "avg_ms": 4557.0,
+   "min_in": 1122,
+   "max_in": 1144
+  },
+  {
+   "agent": "accountant",
+   "action": "correct_after_coordinator_check",
+   "n": 2,
+   "avg_in": 1231.0,
+   "avg_out": 162.0,
+   "avg_ms": 2083.0,
+   "min_in": 1213,
+   "max_in": 1249
+  },
+  {
+   "agent": "writer",
+   "action": "translate_edit_to_es",
+   "n": 2,
+   "avg_in": 354.0,
+   "avg_out": 186.0,
+   "avg_ms": 2805.0,
+   "min_in": 341,
+   "max_in": 367
+  }
+ ],
+ "errors": [
+  {
+   "agent": "teacher",
+   "action": "answer_question",
+   "n": 1
+  }
+ ],
+ "first_ts": "2026-10-26T02:12:05+00:00"
+}
