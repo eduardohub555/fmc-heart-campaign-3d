@@ -21,7 +21,12 @@ both the app and `/api`.
 3. Open the service URL. The management dashboard is at `/#/staff`.
 
 Note: on Render's free plan, the disk is temporary. The SQLite database (donations, accounts,
-letters) resets when the service restarts or redeploys. For lasting data, add a Render
+letters) resets when the service restarts or redeploys. Because `SEED_DEMO_DATA=1` is set in
+`render.yaml`, every fresh start automatically reloads the 50 fictional demo donors from
+`backend/seed/demo_seed.json`: their donations, receipts, letters and conversations, and the
+company logos. New donations made on the site last until the next restart.
+To refresh the demo data after a local simulation, run `../.venv/bin/python scripts/export_seed.py`
+from `backend/`. It exports only `sim.donorNN@example.com` accounts, then you commit and push. For lasting data, add a Render
 persistent disk mounted at `/app/backend/data` (paid plans) or move to a hosted database.
 
 ## Setup (first time)

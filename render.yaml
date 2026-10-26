@@ -15,6 +15,8 @@ services:
         value: staff
       - key: ADMIN_PASSWORD
         generateValue: true    # Render creates a random password; see it under Environment
+      - key: SEED_DEMO_DATA
+        value: "1"             # load the 50 fictional demo donors whenever the disk starts empty
       - key: PRICE_INPUT_PER_1M
         value: "0.10"
       - key: PRICE_OUTPUT_PER_1M

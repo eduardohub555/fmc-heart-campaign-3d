@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
 from contextlib import contextmanager
 from datetime import datetime, timezone
@@ -174,6 +175,28 @@ def init() -> None:
                 "INSERT INTO patients (alias, age, city, condition, procedure) VALUES (?,?,?,?,?)",
                 SEED_PATIENTS,
             )
+        if os.getenv("SEED_DEMO_DATA") == "1" and c.execute("SELECT COUNT(*) FROM donations").fetchone()[0] == 0:
+            load_demo_seed(c)
+
+
+SEED_FILE = config.BACKEND_DIR / "seed" / "demo_seed.json"
+
+
+def load_demo_seed(c: sqlite3.Connection) -> None:
+    """Load the 50 fictional demo donors (accounts, donations, receipts, letters, conversations).
+    Used on hosts whose disk resets (Render free plan) so the demo always has data.
+    Original ids are kept so receipt folios stay unique for new donations."""
+    if not SEED_FILE.exists():
+        return
+    seed = json.loads(SEED_FILE.read_text(encoding="utf-8"))
+    for table in ("users", "donations", "invoices", "letters", "chat_messages", "guidance"):
+        cols_db = {r[1] for r in c.execute(f"PRAGMA table_info({table})")}
+        for row in seed.get(table, []):
+            cols = [k for k in row if k in cols_db]
+            c.execute(f"INSERT OR IGNORE INTO {table} ({', '.join(cols)}) VALUES ({', '.join('?' * len(cols))})",
+                      [row[k] for k in cols])
+    c.execute("UPDATE patients SET raised_mxn = COALESCE((SELECT SUM(amount_mxn) FROM donations d "
+              "WHERE d.patient_id = patients.id), 0)")
 
 
 def rows(sql: str, params: tuple = ()) -> list[dict[str, Any]]:
